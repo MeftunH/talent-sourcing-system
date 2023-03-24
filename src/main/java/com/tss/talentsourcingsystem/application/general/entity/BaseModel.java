@@ -1,5 +1,6 @@
 package com.tss.talentsourcingsystem.application.general.entity;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-public class BaseModel {
+public interface BaseModel {
+    Long getId();
 }
