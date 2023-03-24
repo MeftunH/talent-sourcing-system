@@ -1,11 +1,9 @@
-package com.tss.talentsourcingsystem.application.general.service;
+package com.tss.talentsourcingsystem.application.generic.service;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.tss.talentsourcingsystem.application.general.entity.BaseAdditionalFields;
-import com.tss.talentsourcingsystem.application.general.entity.BaseEntity;
+import com.tss.talentsourcingsystem.application.generic.entity.BaseAdditionalFields;
+import com.tss.talentsourcingsystem.application.generic.entity.BaseEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.tss.talentsourcingsystem.application.general.dto;
+package com.tss.talentsourcingsystem.application.generic.dto;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import lombok.AllArgsConstructor;
