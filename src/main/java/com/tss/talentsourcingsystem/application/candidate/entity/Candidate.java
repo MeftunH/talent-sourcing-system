@@ -14,13 +14,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "surety")
+@Table(name = "candidate")
 @PrimaryKeyJoinColumn(name = "candidate_id")
 public class Candidate extends Person {
-    private String resumeUrl;
-
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ContactInformation> contactInfo=new HashSet<>();
+    private Set<ContactInformation> contactInformation=new HashSet<>();
 
     private CandidateStatus candidateStatus;
 }
