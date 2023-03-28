@@ -5,8 +5,12 @@ import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationType;
 import com.tss.talentsourcingsystem.application.generic.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "contact_type")
 public abstract class ContactInformation extends BaseEntity {
