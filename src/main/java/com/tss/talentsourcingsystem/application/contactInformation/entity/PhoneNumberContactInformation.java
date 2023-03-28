@@ -6,6 +6,6 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("PHONE")
-public class PhoneNumber extends ContactInformation {
+public class PhoneNumberContactInformation extends ContactInformation {
     private String phoneNumber;
 }

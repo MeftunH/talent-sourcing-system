@@ -6,6 +6,6 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("EMAIL")
-public class EmailAddress extends ContactInformation {
+public class EmailContactInformation extends ContactInformation {
     private String emailAdress;
 }

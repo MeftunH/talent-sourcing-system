@@ -3,5 +3,5 @@ package com.tss.talentsourcingsystem.application.contactInformation.enums;
 
 public enum ContactInformationType {
     EMAIL,
-    PHONE,
+    PHONE_NUMBER,
 }
