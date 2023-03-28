@@ -3,14 +3,18 @@ package com.tss.talentsourcingsystem.application.contactInformation.dto;
 
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
 @Data
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
 public class ContactInformationDto {
-    private final Long id;
-    private final ContactInformationType contactInformationType;
-    private final Long candidateId;
+    private Long id;
+    private ContactInformationType contactInformationType;
+    private Long candidateId;
     private Date baseAdditionalFieldsCreatedDate;
     private Date baseAdditionalFieldsUpdatedDate;
 }
