@@ -6,7 +6,7 @@ public enum GeneralErrorMessage implements BaseErrorMessage {
     DATE_COULD_NOT_BE_CONVERTED("Date could not be converted!","Please be sure your date is correct."),
     VALUE_CANNOT_BE_NEGATIVE("Value cannot be negative!","Please enter a value that is zero or larger."),
     PARAMETER_CANNOT_BE_NULL("Parameter cannot be null","Please enter a parameter."),
-    ;
+    CONTACT_INFORMATION_TYPE_NOT_FOUND("Contact information type not found!","Please check the contact information type.");
 
     private final String message;
     private  final String detailMessage;
