@@ -4,13 +4,16 @@ package com.tss.talentsourcingsystem.application.candidate.mapper;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateSaveRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
+import com.tss.talentsourcingsystem.application.contactInformation.mapper.ContactInformationMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(unmappedTargetPolicy= ReportingPolicy.IGNORE,componentModel="spring")
+@Mapper(uses = ContactInformationMapper.class)
 public interface CandidateMapper {
-    CandidateMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(CandidateMapper.class);
+    CandidateMapper INSTANCE=Mappers.getMapper(CandidateMapper.class);
 
+    @Mapping(source = "contactInformation", target = "contactInformation")
     Candidate convertToCandidate(CandidateSaveRequestDto candidateSaveRequestDto);
 
     CandidateDto convertToCandidateDto(Candidate savedCandidate);
