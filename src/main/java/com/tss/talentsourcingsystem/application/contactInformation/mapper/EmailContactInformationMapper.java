@@ -5,6 +5,7 @@ import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactIn
 import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.EmailContactInformation;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -13,6 +14,4 @@ import org.mapstruct.factory.Mappers;
 public interface EmailContactInformationMapper {
     EmailContactInformationMapper INSTANCE = Mappers.getMapper(EmailContactInformationMapper.class);
     EmailContactInformation contactInformationSaveRequestDtoToContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto);
-
-    ContactInformationDto contactInformationToContactInformationDto(ContactInformation savedContactInformation);
 }
