@@ -25,4 +25,9 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
         candidate=candidateRepository.save(candidate);
         return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
     }
+
+    @Override
+    public Candidate getCandidateById(Long candidateId) {
+        return (Candidate) candidateRepository.findById(candidateId).orElse(null);
+    }
 }
