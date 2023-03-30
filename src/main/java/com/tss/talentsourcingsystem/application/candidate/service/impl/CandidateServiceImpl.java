@@ -7,12 +7,8 @@ import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
 import com.tss.talentsourcingsystem.application.candidate.mapper.CandidateMapper;
 import com.tss.talentsourcingsystem.application.candidate.repository.CandidateRepository;
 import com.tss.talentsourcingsystem.application.candidate.service.CandidateService;
-import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
-import com.tss.talentsourcingsystem.application.contactInformation.mapper.ContactInformationMapper;
 import com.tss.talentsourcingsystem.application.generic.service.BaseService;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 public class CandidateServiceImpl extends BaseService<Candidate> implements CandidateService {
@@ -21,11 +17,12 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
     public CandidateServiceImpl(CandidateRepository candidateRepository) {
         this.candidateRepository=candidateRepository;
     }
+
     @Override
     public CandidateDto saveCandidate(CandidateSaveRequestDto candidateSaveRequestDto) {
-        Candidate candidate = CandidateMapper.INSTANCE.convertToCandidate(candidateSaveRequestDto);
+        Candidate candidate=CandidateMapper.INSTANCE.convertToCandidate(candidateSaveRequestDto);
         setAdditionalFields(candidate);
-        candidate = candidateRepository.save(candidate);
-        return  CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
+        candidate=candidateRepository.save(candidate);
+        return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
     }
 }
