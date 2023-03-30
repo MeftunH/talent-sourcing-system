@@ -1,6 +1,7 @@
 package com.tss.talentsourcingsystem.application.contactInformation.mapper;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
+import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
 import org.mapstruct.Mapper;
@@ -38,4 +39,6 @@ public interface ContactInformationMapper {
                 .map(this::map)
                 .collect(Collectors.toSet());
     }
+
+    ContactInformationDto contactInformationToContactInformationDto(ContactInformation savedContactInformation);
 }
