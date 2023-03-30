@@ -1,5 +1,7 @@
 package com.tss.talentsourcingsystem.application.contactInformation.repository;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-public interface PhoneNumberContactInformationRepository extends ContactInformationRepository {
+import com.tss.talentsourcingsystem.application.contactInformation.entity.PhoneNumberContactInformation;
+
+public interface PhoneNumberContactInformationRepository extends ContactInformationRepository<PhoneNumberContactInformation> {
 }

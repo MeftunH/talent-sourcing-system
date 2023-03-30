@@ -13,7 +13,6 @@ import org.mapstruct.factory.Mappers;
 public interface CandidateMapper {
     CandidateMapper INSTANCE=Mappers.getMapper(CandidateMapper.class);
 
-    @Mapping(source = "contactInformation", target = "contactInformation")
     Candidate convertToCandidate(CandidateSaveRequestDto candidateSaveRequestDto);
 
     CandidateDto convertToCandidateDto(Candidate savedCandidate);
