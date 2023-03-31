@@ -37,16 +37,16 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
 
     @Override
     public ContactInformationDto saveContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        ContactInformation savedContactInformation;
         Candidate candidate=candidateService.getCandidateById(contactInformationSaveRequestDto.getCandidateId());
+        ContactInformation savedContactInformation;
         if (candidate==null) {
             throw new IllegalArgumentException("Candidate not found");
         }
         if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.EMAIL)) {
             EmailContactInformation emailContactInformation=EmailContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto);
             emailContactInformation.setCandidate(candidate);
-            savedContactInformation=emailContactInformationRepository.save(emailContactInformation);
-            return ContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savedContactInformation);
+            setAdditionalFields(emailContactInformation);
+            return EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(emailContactInformationRepository.save(emailContactInformation));
         }
         if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.PHONE_NUMBER)) {
             savedContactInformation=phoneNumberContactInformationRepository.
