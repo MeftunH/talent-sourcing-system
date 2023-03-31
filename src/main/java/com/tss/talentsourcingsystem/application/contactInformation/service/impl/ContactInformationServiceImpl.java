@@ -8,6 +8,7 @@ import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactIn
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.EmailContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.entity.PhoneNumberContactInformation;
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationType;
 import com.tss.talentsourcingsystem.application.contactInformation.mapper.ContactInformationMapper;
 import com.tss.talentsourcingsystem.application.contactInformation.mapper.EmailContactInformationMapper;
@@ -37,21 +38,32 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
 
     @Override
     public ContactInformationDto saveContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        ContactInformation savedContactInformation;
         Candidate candidate=candidateService.getCandidateById(contactInformationSaveRequestDto.getCandidateId());
+        ContactInformation savedContactInformation;
         if (candidate==null) {
             throw new IllegalArgumentException("Candidate not found");
         }
         if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.EMAIL)) {
-            EmailContactInformation emailContactInformation=EmailContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto);
+            EmailContactInformation emailContactInformation = EmailContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto);
             emailContactInformation.setCandidate(candidate);
-            savedContactInformation=emailContactInformationRepository.save(emailContactInformation);
-            return ContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savedContactInformation);
+            setAdditionalFields(emailContactInformation);
+            return EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(emailContactInformationRepository.save(emailContactInformation));
         }
         if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.PHONE_NUMBER)) {
-            savedContactInformation=phoneNumberContactInformationRepository.
-                    save(PhoneNumberContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto));
-            return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savedContactInformation);
+            PhoneNumberContactInformation phoneNumberContactInformation = PhoneNumberContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto);
+            phoneNumberContactInformation.setCandidate(candidate);
+            setAdditionalFields(phoneNumberContactInformation);
+            return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(phoneNumberContactInformationRepository.save(phoneNumberContactInformation));
+        }
+        if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.BOTH)) {
+            EmailContactInformation emailContactInformation = EmailContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto);
+            emailContactInformation.setCandidate(candidate);
+            setAdditionalFields(emailContactInformation);
+            PhoneNumberContactInformation phoneNumberContactInformation = PhoneNumberContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(contactInformationSaveRequestDto);
+            phoneNumberContactInformation.setCandidate(candidate);
+            setAdditionalFields(phoneNumberContactInformation);
+            savedContactInformation = emailContactInformationRepository.save(emailContactInformation);
+            return ContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savedContactInformation);
         }
         throw new GeneralBusinessException(GeneralErrorMessage.CONTACT_INFORMATION_TYPE_NOT_FOUND);
     }

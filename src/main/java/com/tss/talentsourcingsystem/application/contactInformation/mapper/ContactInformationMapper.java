@@ -4,7 +4,9 @@ package com.tss.talentsourcingsystem.application.contactInformation.mapper;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
+import com.tss.talentsourcingsystem.application.generic.entity.BaseAdditionalFields;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -41,4 +43,6 @@ public interface ContactInformationMapper {
     }
 
     ContactInformationDto contactInformationToContactInformationDto(ContactInformation savedContactInformation);
+
+    BaseAdditionalFields contactInformationSaveRequestDtoToBaseAdditionalFields(ContactInformationSaveRequestDto contactInformationSaveRequestDto);
 }
