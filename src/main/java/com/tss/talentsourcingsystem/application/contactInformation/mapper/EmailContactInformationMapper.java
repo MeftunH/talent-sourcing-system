@@ -11,7 +11,12 @@ import org.mapstruct.factory.Mappers;
 
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface EmailContactInformationMapper {
+public interface EmailContactInformationMapper extends ContactInformationMapper{
     EmailContactInformationMapper INSTANCE = Mappers.getMapper(EmailContactInformationMapper.class);
     EmailContactInformation contactInformationSaveRequestDtoToContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto);
+    @Mapping(source = "candidate.id", target = "candidateId")
+    @Mapping(target = "contactInformationType",constant = "EMAIL")
+    @Mapping(source="baseAdditionalFields.createdDate",target="baseAdditionalFieldsCreatedDate")
+    @Mapping(source="baseAdditionalFields.updatedDate",target="baseAdditionalFieldsUpdatedDate")
+    ContactInformationDto emailContactInformationToContactInformationDto(EmailContactInformation save);
 }
