@@ -7,10 +7,9 @@ import com.tss.talentsourcingsystem.application.contactInformation.service.Conta
 import com.tss.talentsourcingsystem.application.generic.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/contact-informations")
@@ -21,6 +20,11 @@ public class ContactInformationController {
     @PostMapping
     public ResponseEntity<RestResponse<ContactInformationDto>> saveContactInformation(@RequestBody ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
         ContactInformationDto contactInformationDto = contactInformationService.saveContactInformation(contactInformationSaveRequestDto);
+        return ResponseEntity.ok(RestResponse.of(contactInformationDto));
+    }
+    @GetMapping("candidate/{candidateId}")
+    public ResponseEntity<RestResponse<List<ContactInformationDto>>> getContactInformationByCandidateId(@PathVariable Long candidateId) {
+        List<ContactInformationDto> contactInformationDto = contactInformationService.getContactInformationByCandidateId(candidateId);
         return ResponseEntity.ok(RestResponse.of(contactInformationDto));
     }
 }
