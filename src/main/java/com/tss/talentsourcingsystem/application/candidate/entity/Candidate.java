@@ -20,5 +20,7 @@ public class Candidate extends Person {
     @OneToMany(mappedBy = "candidate",fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ContactInformation> contactInformation=new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "candidate_status",nullable=false,length=30 )
     private CandidateStatus candidateStatus;
 }
