@@ -3,19 +3,26 @@ package com.tss.talentsourcingsystem.application.candidate.service.impl;
 
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateSaveRequestDto;
+import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
 import com.tss.talentsourcingsystem.application.candidate.mapper.CandidateMapper;
 import com.tss.talentsourcingsystem.application.candidate.repository.CandidateRepository;
 import com.tss.talentsourcingsystem.application.candidate.service.CandidateService;
+import com.tss.talentsourcingsystem.application.candidate.validation.CandidateValidationService;
 import com.tss.talentsourcingsystem.application.generic.service.BaseService;
+import com.tss.talentsourcingsystem.application.person.entity.Person;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CandidateServiceImpl extends BaseService<Candidate> implements CandidateService {
     private final CandidateRepository candidateRepository;
+    private final CandidateValidationService candidateValidationService;
 
-    public CandidateServiceImpl(CandidateRepository candidateRepository) {
+    public CandidateServiceImpl(CandidateRepository candidateRepository, CandidateValidationService candidateValidationService) {
         this.candidateRepository=candidateRepository;
+        this.candidateValidationService=candidateValidationService;
     }
 
     @Override
@@ -28,6 +35,28 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
 
     @Override
     public Candidate getCandidateById(Long candidateId) {
-        return (Candidate) candidateRepository.findById(candidateId).orElse(null);
+        Optional<Person> candidateOptional=candidateRepository.findById(candidateId);
+        candidateValidationService.checkOptionalCandidateExists(candidateOptional);
+        return (Candidate) candidateOptional.get();
+    }
+
+    @Override
+    public CandidateDto getCandidateDtoById(Long candidateId) {
+        Candidate candidate=getCandidateById(candidateId);
+        return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
+    }
+
+    @Override
+    public CandidateDto updateCandidate(Long candidateId, CandidateUpdateRequestDto candidateUpdateRequestDto) {
+        Candidate candidate=getCandidateById(candidateId);
+        setAdditionalFields(candidate);
+        candidate.setCandidateStatus(candidateUpdateRequestDto.getCandidateStatus());
+        candidate.setName(candidateUpdateRequestDto.getName());
+        candidate.setSurname(candidateUpdateRequestDto.getSurname());
+
+        candidateValidationService.validateCandidate(candidate);
+
+        candidate=candidateRepository.save(candidate);
+        return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
     }
 }

@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "candidate")
 @PrimaryKeyJoinColumn(name = "candidate_id")
 public class Candidate extends Person {
-    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "candidate",fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ContactInformation> contactInformation=new HashSet<>();
 
     private CandidateStatus candidateStatus;
