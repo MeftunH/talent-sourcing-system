@@ -9,9 +9,11 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface EmailContactInformationMapper extends ContactInformationMapper{
+@Mapper(uses = ContactInformationMapper.class,unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+public interface EmailContactInformationMapper{
     EmailContactInformationMapper INSTANCE = Mappers.getMapper(EmailContactInformationMapper.class);
     EmailContactInformation contactInformationSaveRequestDtoToContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto);
     @Mapping(source = "candidate.id", target = "candidateId")
@@ -19,4 +21,8 @@ public interface EmailContactInformationMapper extends ContactInformationMapper{
     @Mapping(source="baseAdditionalFields.createdDate",target="baseAdditionalFieldsCreatedDate")
     @Mapping(source="baseAdditionalFields.updatedDate",target="baseAdditionalFieldsUpdatedDate")
     ContactInformationDto emailContactInformationToContactInformationDto(EmailContactInformation save);
+
+    List<ContactInformation> emailContactInformationListToContactInformationList(List<EmailContactInformation> emailContactInformationList);
+
+    List<ContactInformationDto> emailContactInformationListToContactInformationDtoList(List<EmailContactInformation> emailContactInformationList);
 }

@@ -4,6 +4,9 @@ package com.tss.talentsourcingsystem.application.contactInformation.service;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 
+import java.util.List;
+
 public interface ContactInformationService {
   ContactInformationDto saveContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto);
+  List<ContactInformationDto> getContactInformationByCandidateId(Long candidateId);
 }
