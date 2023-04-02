@@ -5,6 +5,7 @@ import com.tss.talentsourcingsystem.application.general.errorMessage.GeneralErro
 import com.tss.talentsourcingsystem.application.general.exception.GeneralBusinessException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -23,6 +24,14 @@ public class DateUtil {
         return Date
                 .from(dateToConvert.atStartOfDay()
                         .atZone(ZoneId.systemDefault())
+                        .toInstant());
+    }
+
+    public static Date convertLocalDateTimeToDate(LocalDateTime date) {
+        if (date==null)
+            throw new GeneralBusinessException(GeneralErrorMessage.DATE_COULD_NOT_BE_CONVERTED);
+        return Date
+                .from(date.atZone(ZoneId.systemDefault())
                         .toInstant());
     }
 }
