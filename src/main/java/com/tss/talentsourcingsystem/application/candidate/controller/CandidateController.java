@@ -10,6 +10,8 @@ import com.tss.talentsourcingsystem.application.generic.dto.RestResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/candidates")
 public class CandidateController {
@@ -47,5 +49,9 @@ public class CandidateController {
     public ResponseEntity<RestResponse<CandidateDto>> updateCandidateStatus(@PathVariable Long candidateId, @RequestBody CandidateUpdateStatusRequestDto candidateUpdateStatusRequestDto) {
         CandidateDto candidateDto=candidateService.updateCandidateStatus(candidateId, candidateUpdateStatusRequestDto);
         return ResponseEntity.ok(RestResponse.of(candidateDto));
+    }
+    @GetMapping
+    public ResponseEntity<RestResponse<List<CandidateDto>>> getAllCandidates() {
+        return ResponseEntity.ok(RestResponse.of(candidateService.getAllCandidates()));
     }
 }

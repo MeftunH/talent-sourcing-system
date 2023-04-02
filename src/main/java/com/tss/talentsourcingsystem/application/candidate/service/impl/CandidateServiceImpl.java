@@ -14,6 +14,8 @@ import com.tss.talentsourcingsystem.application.generic.service.BaseService;
 import com.tss.talentsourcingsystem.application.person.entity.Person;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,5 +76,21 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
         candidate.setCandidateStatus(candidateUpdateStatusRequestDto.candidateStatus());
         candidate=candidateRepository.save(candidate);
         return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
+    }
+
+    @Override
+    public List<CandidateDto> getAllCandidates() {
+        List<Person> candidates=candidateRepository.findAll();
+        List<Candidate> candidateList=getCandidates(candidates);
+        return CandidateMapper.INSTANCE.convertToCandidateDtoList(candidateList);
+    }
+
+    private static List<Candidate> getCandidates(List<Person> candidates) {
+        List<Candidate> candidateList= new ArrayList<>();
+        for (Person person: candidates) {
+            Candidate candidate=(Candidate) person;
+            candidateList.add(candidate);
+        }
+        return candidateList;
     }
 }
