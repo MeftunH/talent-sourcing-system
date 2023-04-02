@@ -24,5 +24,5 @@ public interface EmailContactInformationMapper{
 
     List<ContactInformation> emailContactInformationListToContactInformationList(List<EmailContactInformation> emailContactInformationList);
 
-    List<ContactInformationDto> emailContactInformationListToContactInformationDtoList(List<EmailContactInformation> emailContactInformationList);
+    ContactInformationDto emailContactInformationToContactInformationDtoList(EmailContactInformation emailContactInformationList);
 }

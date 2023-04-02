@@ -27,4 +27,10 @@ public class ContactInformationController {
         List<ContactInformationDto> contactInformationDto = contactInformationService.getContactInformationByCandidateId(candidateId);
         return ResponseEntity.ok(RestResponse.of(contactInformationDto));
     }
+
+    @PutMapping("candidate/{candidateId}")
+    public ResponseEntity<RestResponse<ContactInformationDto>> updateContactInformation(@PathVariable Long candidateId, @RequestBody ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
+        ContactInformationDto contactInformationDto = contactInformationService.updateContactInformation(candidateId, contactInformationSaveRequestDto);
+        return ResponseEntity.ok(RestResponse.of(contactInformationDto));
+    }
 }

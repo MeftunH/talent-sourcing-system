@@ -9,5 +9,7 @@ import java.util.List;
 
 @Repository
 public interface EmailContactInformationRepository extends ContactInformationRepository<EmailContactInformation>{
-    List<EmailContactInformation> findByCandidateId(Long candidateId);
+    EmailContactInformation findByCandidateId(Long candidateId);
+
+    EmailContactInformation findByEmailAddress(String email);
 }

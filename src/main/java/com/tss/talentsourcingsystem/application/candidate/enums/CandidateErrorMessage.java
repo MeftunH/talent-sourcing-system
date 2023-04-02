@@ -6,7 +6,9 @@ import com.tss.talentsourcingsystem.application.general.errorMessage.BaseErrorMe
 public enum CandidateErrorMessage implements BaseErrorMessage {
     CANDIDATE_NOT_FOUND("Candidate Not Found!","Please check the candidate id."),
     PHONE_NUMBER_IS_NOT_VALID("Phone number is not valid!","Please check the phone number."),
-    PERSON_TYPE_MUST_BE_CANDIDATE("Person type must be candidate!","Please check the person type.");
+    PERSON_TYPE_MUST_BE_CANDIDATE("Person type must be candidate!","Please check the person type."),
+    FIELD_CANNOT_BE_NULL("Field cannot be null!","Please check the field."),
+    CANDIDATE_STATUS_NOT_FOUND("Candidate status not found!","Please check the candidate status.");
 
     private  final String message;
     private  final String detailMessage;

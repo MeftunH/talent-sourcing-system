@@ -4,6 +4,7 @@ package com.tss.talentsourcingsystem.application.candidate.service.impl;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateSaveRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateRequestDto;
+import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateStatusRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
 import com.tss.talentsourcingsystem.application.candidate.mapper.CandidateMapper;
 import com.tss.talentsourcingsystem.application.candidate.repository.CandidateRepository;
@@ -56,6 +57,21 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
 
         candidateValidationService.validateCandidate(candidate);
 
+        candidate=candidateRepository.save(candidate);
+        return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
+    }
+
+    @Override
+    public void deleteCandidate(Long candidateId) {
+        Candidate candidate=getCandidateById(candidateId);
+        candidateRepository.delete(candidate);
+    }
+
+    @Override
+    public CandidateDto updateCandidateStatus(Long candidateId, CandidateUpdateStatusRequestDto candidateUpdateStatusRequestDto) {
+        candidateValidationService.validateCandidateStatusIsExists(candidateUpdateStatusRequestDto.candidateStatus());
+        Candidate candidate=getCandidateById(candidateId);
+        candidate.setCandidateStatus(candidateUpdateStatusRequestDto.candidateStatus());
         candidate=candidateRepository.save(candidate);
         return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
     }

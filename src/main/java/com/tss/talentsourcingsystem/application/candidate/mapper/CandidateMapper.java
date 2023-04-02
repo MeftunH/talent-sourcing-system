@@ -15,5 +15,7 @@ public interface CandidateMapper {
 
     Candidate convertToCandidate(CandidateSaveRequestDto candidateSaveRequestDto);
 
+    @Mapping(source="baseAdditionalFields.createdDate",target="baseAdditionalFieldsCreatedDate")
+    @Mapping(source="baseAdditionalFields.updatedDate",target="baseAdditionalFieldsUpdatedDate")
     CandidateDto convertToCandidateDto(Candidate savedCandidate);
 }

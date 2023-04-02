@@ -26,5 +26,8 @@ public interface PhoneNumberContactInformationMapper {
 
     List<ContactInformation> phoneNumberContactInformationListToContactInformationList(List<PhoneNumberContactInformation> phoneNumberContactInformationList);
 
-    List<ContactInformationDto> phoneNumberContactInformationListToContactInformationDtoList(List<PhoneNumberContactInformation> phoneNumberContactInformationList);
+
+    ContactInformationDto phoneNumberContactInformationToContactInformationDtoList(PhoneNumberContactInformation phoneNumberContactInformation);
+
+    ContactInformationDto contactInformationToContactInformationDto(ContactInformationSaveRequestDto contactInformationSaveRequestDto);
 }

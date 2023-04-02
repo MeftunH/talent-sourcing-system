@@ -7,4 +7,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface ContactInformationRepository<T extends ContactInformation> extends JpaRepository<T, Long> {
+    void deleteByCandidateId(Long candidateId);
 }
