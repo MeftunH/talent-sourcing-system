@@ -19,7 +19,7 @@ public interface ContactInformationMapper {
 
     default ContactInformation map(ContactInformationSaveRequestDto dto) {
         ContactInformation entity=null;
-        switch (dto.getContactInformationType()) {
+        switch (dto.contactInformationType()) {
             case EMAIL:
                 entity=EmailContactInformationMapper.INSTANCE.contactInformationSaveRequestDtoToContactInformation(dto);
                 break;

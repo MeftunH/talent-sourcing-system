@@ -2,6 +2,7 @@ package com.tss.talentsourcingsystem.application.candidate.validation;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
+import com.tss.talentsourcingsystem.application.candidate.enums.CandidateStatus;
 import com.tss.talentsourcingsystem.application.person.entity.Person;
 
 import java.util.Optional;
@@ -12,4 +13,5 @@ public interface CandidateValidationService {
 
     void validateCandidate(Candidate candidate);
 
+    void validateCandidateStatusIsExists(CandidateStatus candidateStatus);
 }

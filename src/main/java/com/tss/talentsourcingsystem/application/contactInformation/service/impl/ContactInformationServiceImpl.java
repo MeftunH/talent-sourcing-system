@@ -16,40 +16,47 @@ import com.tss.talentsourcingsystem.application.contactInformation.mapper.PhoneN
 import com.tss.talentsourcingsystem.application.contactInformation.repository.EmailContactInformationRepository;
 import com.tss.talentsourcingsystem.application.contactInformation.repository.PhoneNumberContactInformationRepository;
 import com.tss.talentsourcingsystem.application.contactInformation.service.ContactInformationService;
+import com.tss.talentsourcingsystem.application.contactInformation.validation.ContactInformationValidationService;
 import com.tss.talentsourcingsystem.application.general.errorMessage.GeneralErrorMessage;
 import com.tss.talentsourcingsystem.application.general.exception.GeneralBusinessException;
+import com.tss.talentsourcingsystem.application.general.exception.ItemNotFoundException;
 import com.tss.talentsourcingsystem.application.generic.service.BaseService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@ControllerAdvice
 public class ContactInformationServiceImpl extends BaseService<ContactInformation> implements ContactInformationService {
     private final PhoneNumberContactInformationRepository phoneNumberContactInformationRepository;
     private final CandidateService candidateService;
     private final EmailContactInformationRepository emailContactInformationRepository;
     private final CandidateValidationService candidateValidationService;
+    private final ContactInformationValidationService contactInformationValidationService;
 
-    public ContactInformationServiceImpl(EmailContactInformationRepository emailContactInformationRepository, PhoneNumberContactInformationRepository phoneNumberContactInformationRepository, CandidateService candidateService, CandidateValidationService candidateValidationService) {
+    public ContactInformationServiceImpl(EmailContactInformationRepository emailContactInformationRepository, PhoneNumberContactInformationRepository phoneNumberContactInformationRepository, CandidateService candidateService, CandidateValidationService candidateValidationService, ContactInformationValidationService contactInformationValidationService) {
         this.emailContactInformationRepository=emailContactInformationRepository;
         this.phoneNumberContactInformationRepository=phoneNumberContactInformationRepository;
         this.candidateService=candidateService;
         this.candidateValidationService=candidateValidationService;
+        this.contactInformationValidationService=contactInformationValidationService;
     }
 
     @Override
     public ContactInformationDto saveContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        Candidate candidate=candidateService.getCandidateById(contactInformationSaveRequestDto.getCandidateId());
+        Candidate candidate=candidateService.getCandidateById(contactInformationSaveRequestDto.candidateId());
         candidateValidationService.checkCandidateExists(candidate);
-        checkIfIsValidContactInformationType(contactInformationSaveRequestDto);
-        checkIfIsInformationMatchToInformationType(contactInformationSaveRequestDto);
+        contactInformationValidationService.checkIfIsValidContactInformationType(contactInformationSaveRequestDto);
+        contactInformationValidationService.checkIfIsInformationMatchToInformationType(contactInformationSaveRequestDto);
 
-        if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.BOTH)) {
+        if (contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.BOTH)) {
             return saveBothContactInformationTypes(contactInformationSaveRequestDto, candidate);
-        } else if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.EMAIL)) {
+        } else if (contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.EMAIL)) {
             return EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(saveEmailContactInformation(contactInformationSaveRequestDto, candidate));
-        } else if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.PHONE_NUMBER)) {
+        } else if (contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.PHONE_NUMBER)) {
             return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savePhoneNumberContactInformation(contactInformationSaveRequestDto, candidate));
         }
         throw new GeneralBusinessException(GeneralErrorMessage.INTERNAL_SERVER_ERROR);
@@ -57,13 +64,120 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
 
     @Override
     public List<ContactInformationDto> getContactInformationByCandidateId(Long candidateId) {
-        List<EmailContactInformation> emailContactInformationList=emailContactInformationRepository.findByCandidateId(candidateId);
-        List<PhoneNumberContactInformation> phoneNumberContactInformationList=phoneNumberContactInformationRepository.findByCandidateId(candidateId);
+        List<ContactInformationDto> contactInformationListDto=new ArrayList<>();
 
-        List<ContactInformationDto> contactInformationListDto=EmailContactInformationMapper.INSTANCE.emailContactInformationListToContactInformationDtoList(emailContactInformationList);
-        contactInformationListDto.addAll(PhoneNumberContactInformationMapper.INSTANCE.phoneNumberContactInformationListToContactInformationDtoList(phoneNumberContactInformationList));
+        EmailContactInformation emailContactInformationList=emailContactInformationRepository.findByCandidateId(candidateId);
+        PhoneNumberContactInformation phoneNumberContactInformation=phoneNumberContactInformationRepository.findByCandidateId(candidateId);
 
+        if (emailContactInformationList!=null) {
+            contactInformationListDto.add(EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDtoList(emailContactInformationList));
+        }
+        if (phoneNumberContactInformation!=null) {
+            contactInformationListDto.add(PhoneNumberContactInformationMapper.INSTANCE.phoneNumberContactInformationToContactInformationDtoList(phoneNumberContactInformation));
+        }
         return contactInformationListDto;
+    }
+
+    @Override
+    @Transactional
+    public ContactInformationDto updateContactInformation(Long candidateId, ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
+
+        contactInformationValidationService.checkIfIsValidContactInformationType(contactInformationSaveRequestDto);
+        contactInformationValidationService.checkIfIsInformationMatchToInformationType(contactInformationSaveRequestDto);
+
+        ContactInformationType newType=contactInformationSaveRequestDto.contactInformationType();
+        ContactInformationType oldType=getCurrentContactInformationType(candidateId);
+        switch (newType) {
+            case BOTH -> {
+                if (oldType==ContactInformationType.EMAIL) {
+                    updateEmailContactInformation(candidateId, contactInformationSaveRequestDto);
+                    savePhoneNumberContactInformation(contactInformationSaveRequestDto, candidateService.getCandidateById(candidateId));
+                } else if (oldType==ContactInformationType.PHONE_NUMBER) {
+                    updatePhoneNumberContactInformation(candidateId, contactInformationSaveRequestDto);
+                    saveEmailContactInformation(contactInformationSaveRequestDto, candidateService.getCandidateById(candidateId));
+                } else if (oldType==ContactInformationType.BOTH) {
+                    return updateBothContactInformationTypes(candidateId, contactInformationSaveRequestDto);
+                }
+            }
+            case EMAIL -> {
+                if (oldType==ContactInformationType.EMAIL) {
+                    return EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(updateEmailContactInformation(candidateId, contactInformationSaveRequestDto));
+                } else if (oldType==ContactInformationType.PHONE_NUMBER) {
+                    deletePhoneNumberContactInformation(candidateId);
+                    return EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(saveEmailContactInformation(contactInformationSaveRequestDto, candidateService.getCandidateById(candidateId)));
+                } else if (oldType==ContactInformationType.BOTH) {
+                    deletePhoneNumberContactInformation(candidateId);
+                    return EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(updateEmailContactInformation(candidateId, contactInformationSaveRequestDto));
+                }
+            }
+            case PHONE_NUMBER -> {
+                if (oldType==ContactInformationType.EMAIL) {
+                    deleteEmailContactInformation(candidateId);
+                    return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savePhoneNumberContactInformation(contactInformationSaveRequestDto, candidateService.getCandidateById(candidateId)));
+                } else if (oldType==ContactInformationType.PHONE_NUMBER) {
+                    return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(updatePhoneNumberContactInformation(candidateId, contactInformationSaveRequestDto));
+                } else if (oldType==ContactInformationType.BOTH) {
+                    deleteEmailContactInformation(candidateId);
+                    return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(updatePhoneNumberContactInformation(candidateId, contactInformationSaveRequestDto));
+                }
+            }
+        }
+        return saveContactInformation(contactInformationSaveRequestDto);
+    }
+
+    @Transactional
+    public void deletePhoneNumberContactInformation(Long candidateId) {
+        phoneNumberContactInformationRepository.deleteByCandidateId(candidateId);
+    }
+
+    @Transactional
+    public void deleteEmailContactInformation(Long candidateId) {
+        emailContactInformationRepository.deleteByCandidateId(candidateId);
+    }
+
+    private ContactInformationType getCurrentContactInformationType(Long candidateId) {
+        EmailContactInformation emailContactInformation=emailContactInformationRepository.findByCandidateId(candidateId);
+        PhoneNumberContactInformation phoneNumberContactInformation=phoneNumberContactInformationRepository.findByCandidateId(candidateId);
+
+        if (emailContactInformation!=null&&phoneNumberContactInformation!=null) {
+            return ContactInformationType.BOTH;
+        } else if (emailContactInformation!=null) {
+            return ContactInformationType.EMAIL;
+        } else if (phoneNumberContactInformation!=null) {
+            return ContactInformationType.PHONE_NUMBER;
+        }
+        throw new ItemNotFoundException(ContactInformationErrorMessage.CONTACT_INFORMATION_TYPE_NOT_FOUND);
+    }
+
+    private ContactInformationDto updateBothContactInformationTypes(Long candidateId, ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
+        EmailContactInformation emailContactInformation=updateEmailContactInformation(candidateId, contactInformationSaveRequestDto);
+        PhoneNumberContactInformation phoneNumberContactInformation=updatePhoneNumberContactInformation(candidateId, contactInformationSaveRequestDto);
+
+        return buildContactInformationDto(emailContactInformation, phoneNumberContactInformation);
+    }
+
+    private PhoneNumberContactInformation updatePhoneNumberContactInformation(Long candidateId, ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
+        PhoneNumberContactInformation phoneNumberContactInformation=phoneNumberContactInformationRepository.findByCandidateId(candidateId);
+        if (phoneNumberContactInformation==null) {
+            throw new ItemNotFoundException(ContactInformationErrorMessage.PHONE_NUMBER_CONTACT_INFORMATION_NOT_FOUND);
+        }
+        phoneNumberContactInformation.setPhoneNumber(contactInformationSaveRequestDto.phoneNumber());
+        setAdditionalFields(phoneNumberContactInformation);
+        phoneNumberContactInformationRepository.save(phoneNumberContactInformation);
+
+        return phoneNumberContactInformation;
+    }
+
+    private EmailContactInformation updateEmailContactInformation(Long candidateId, ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
+        EmailContactInformation emailContactInformation=emailContactInformationRepository.findByCandidateId(candidateId);
+        if (emailContactInformation==null) {
+            throw new ItemNotFoundException(ContactInformationErrorMessage.EMAIL_CONTACT_INFORMATION_NOT_FOUND);
+        }
+        emailContactInformation.setEmailAddress(contactInformationSaveRequestDto.emailAddress());
+        setAdditionalFields(emailContactInformation);
+        emailContactInformationRepository.save(emailContactInformation);
+
+        return emailContactInformation;
     }
 
     private ContactInformationDto saveBothContactInformationTypes(ContactInformationSaveRequestDto contactInformationSaveRequestDto, Candidate candidate) {
@@ -74,8 +188,9 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
     }
 
     private EmailContactInformation saveEmailContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto, Candidate candidate) {
+        contactInformationValidationService.checkEmailContactInformationIsExists(candidate);
         EmailContactInformation emailContactInformation=new EmailContactInformation();
-        emailContactInformation.setEmailAddress(contactInformationSaveRequestDto.getEmailAddress());
+        emailContactInformation.setEmailAddress(contactInformationSaveRequestDto.emailAddress());
         emailContactInformation.setCandidate(candidate);
         setAdditionalFields(emailContactInformation);
         emailContactInformationRepository.save(emailContactInformation);
@@ -84,8 +199,9 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
     }
 
     private PhoneNumberContactInformation savePhoneNumberContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto, Candidate candidate) {
+        contactInformationValidationService.checkPhoneNumberContactInformationIsExists(candidate);
         PhoneNumberContactInformation phoneNumberContactInformation=new PhoneNumberContactInformation();
-        phoneNumberContactInformation.setPhoneNumber(contactInformationSaveRequestDto.getPhoneNumber());
+        phoneNumberContactInformation.setPhoneNumber(contactInformationSaveRequestDto.phoneNumber());
         phoneNumberContactInformation.setCandidate(candidate);
         setAdditionalFields(phoneNumberContactInformation);
         phoneNumberContactInformationRepository.save(phoneNumberContactInformation);
@@ -105,27 +221,5 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
                 .build();
     }
 
-    private void checkIfIsInformationMatchToInformationType(ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.BOTH)) {
-            if (contactInformationSaveRequestDto.getEmailAddress()==null||contactInformationSaveRequestDto.getPhoneNumber()==null) {
-                throw new IllegalArgumentException(ContactInformationErrorMessage.EMAIL_AND_PHONE_NUMBER_CAN_NOT_BE_NULL.getMessage());
-            }
-        } else if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.EMAIL)) {
-            if (contactInformationSaveRequestDto.getEmailAddress()==null) {
-                throw new IllegalArgumentException(ContactInformationErrorMessage.EMAIL_CAN_NOT_BE_NULL.getMessage());
-            }
-        } else if (contactInformationSaveRequestDto.getContactInformationType().equals(ContactInformationType.PHONE_NUMBER)) {
-            if (contactInformationSaveRequestDto.getPhoneNumber()==null) {
-                throw new IllegalArgumentException(ContactInformationErrorMessage.PHONE_NUMBER_CAN_NOT_BE_NULL.getMessage());
-            }
-        }
 
-    }
-
-    private void checkIfIsValidContactInformationType(ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        List<ContactInformationType> contactInformationTypes=Arrays.asList(ContactInformationType.values());
-        if (!contactInformationTypes.contains(contactInformationSaveRequestDto.getContactInformationType())) {
-            throw new GeneralBusinessException(ContactInformationErrorMessage.CONTACT_INFORMATION_TYPE_NOT_FOUND);
-        }
-    }
 }

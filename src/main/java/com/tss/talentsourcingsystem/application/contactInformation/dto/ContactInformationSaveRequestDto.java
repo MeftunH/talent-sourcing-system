@@ -5,12 +5,6 @@ import com.tss.talentsourcingsystem.application.contactInformation.enums.Contact
 import jakarta.annotation.Nullable;
 import lombok.Data;
 
-@Data
-public class ContactInformationSaveRequestDto {
-    private final ContactInformationType contactInformationType;
-    private final Long candidateId;
-    @Nullable
-    private final String phoneNumber;
-    @Nullable
-    private final String emailAddress;
+public record ContactInformationSaveRequestDto(ContactInformationType contactInformationType, Long candidateId,
+                                               @Nullable String phoneNumber, @Nullable String emailAddress) {
 }

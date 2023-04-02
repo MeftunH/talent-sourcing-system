@@ -4,7 +4,9 @@ package com.tss.talentsourcingsystem.application.candidate.service;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateSaveRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateRequestDto;
+import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateStatusRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
+import com.tss.talentsourcingsystem.application.candidate.enums.CandidateStatus;
 
 public interface CandidateService {
     CandidateDto saveCandidate(CandidateSaveRequestDto candidateSaveRequestDto);
@@ -13,4 +15,8 @@ public interface CandidateService {
     CandidateDto getCandidateDtoById(Long candidateId);
 
     CandidateDto updateCandidate(Long candidateId, CandidateUpdateRequestDto candidateUpdateRequestDto);
+
+    void deleteCandidate(Long candidateId);
+
+    CandidateDto updateCandidateStatus(Long candidateId, CandidateUpdateStatusRequestDto candidateStatus);
 }
