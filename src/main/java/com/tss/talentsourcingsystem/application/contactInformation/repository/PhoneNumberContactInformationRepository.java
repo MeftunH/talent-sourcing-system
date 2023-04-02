@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PhoneNumberContactInformationRepository extends ContactInformationRepository<PhoneNumberContactInformation> {
-    List<PhoneNumberContactInformation> findByCandidateId(Long candidateId);
+    PhoneNumberContactInformation findByCandidateId(Long candidateId);
+    PhoneNumberContactInformation findByPhoneNumber(String phoneNumber);
 }
