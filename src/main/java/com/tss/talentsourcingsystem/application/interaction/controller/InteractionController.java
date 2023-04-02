@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/interactions")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class InteractionController {
     private final InteractionService interactionService;
     @PostMapping

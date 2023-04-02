@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/contact-informations")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ContactInformationController {
     private final ContactInformationService contactInformationService;
 
