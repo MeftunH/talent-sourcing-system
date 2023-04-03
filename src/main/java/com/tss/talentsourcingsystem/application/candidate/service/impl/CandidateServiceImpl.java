@@ -28,10 +28,20 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
         this.candidateValidationService=candidateValidationService;
     }
 
+    private static List<Candidate> getCandidates(List<Person> candidates) {
+        List<Candidate> candidateList=new ArrayList<>();
+        for (Person person : candidates) {
+            Candidate candidate=(Candidate) person;
+            candidateList.add(candidate);
+        }
+        return candidateList;
+    }
+
     @Override
     public CandidateDto saveCandidate(CandidateSaveRequestDto candidateSaveRequestDto) {
         Candidate candidate=CandidateMapper.INSTANCE.convertToCandidate(candidateSaveRequestDto);
         setAdditionalFields(candidate);
+        candidateValidationService.validateCandidate(candidate);
         candidate=candidateRepository.save(candidate);
         return CandidateMapper.INSTANCE.convertToCandidateDto(candidate);
     }
@@ -83,14 +93,5 @@ public class CandidateServiceImpl extends BaseService<Candidate> implements Cand
         List<Person> candidates=candidateRepository.findAll();
         List<Candidate> candidateList=getCandidates(candidates);
         return CandidateMapper.INSTANCE.convertToCandidateDtoList(candidateList);
-    }
-
-    private static List<Candidate> getCandidates(List<Person> candidates) {
-        List<Candidate> candidateList= new ArrayList<>();
-        for (Person person: candidates) {
-            Candidate candidate=(Candidate) person;
-            candidateList.add(candidate);
-        }
-        return candidateList;
     }
 }

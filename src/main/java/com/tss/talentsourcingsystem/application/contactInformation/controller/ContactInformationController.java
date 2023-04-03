@@ -14,24 +14,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/contact-informations")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ContactInformationController {
     private final ContactInformationService contactInformationService;
 
     @PostMapping
     public ResponseEntity<RestResponse<ContactInformationDto>> saveContactInformation(@RequestBody ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        ContactInformationDto contactInformationDto = contactInformationService.saveContactInformation(contactInformationSaveRequestDto);
+        ContactInformationDto contactInformationDto=contactInformationService.saveContactInformation(contactInformationSaveRequestDto);
         return ResponseEntity.ok(RestResponse.of(contactInformationDto));
     }
+
     @GetMapping("candidate/{candidateId}")
     public ResponseEntity<RestResponse<List<ContactInformationDto>>> getContactInformationByCandidateId(@PathVariable Long candidateId) {
-        List<ContactInformationDto> contactInformationDto = contactInformationService.getContactInformationByCandidateId(candidateId);
+        List<ContactInformationDto> contactInformationDto=contactInformationService.getContactInformationByCandidateId(candidateId);
         return ResponseEntity.ok(RestResponse.of(contactInformationDto));
     }
 
     @PutMapping("candidate/{candidateId}")
     public ResponseEntity<RestResponse<ContactInformationDto>> updateContactInformation(@PathVariable Long candidateId, @RequestBody ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
-        ContactInformationDto contactInformationDto = contactInformationService.updateContactInformation(candidateId, contactInformationSaveRequestDto);
+        ContactInformationDto contactInformationDto=contactInformationService.updateContactInformation(candidateId, contactInformationSaveRequestDto);
         return ResponseEntity.ok(RestResponse.of(contactInformationDto));
     }
 }
