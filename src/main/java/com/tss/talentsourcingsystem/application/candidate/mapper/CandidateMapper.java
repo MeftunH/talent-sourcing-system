@@ -5,9 +5,12 @@ import com.tss.talentsourcingsystem.application.candidate.dto.CandidateDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateSaveRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
 import com.tss.talentsourcingsystem.application.contactInformation.mapper.ContactInformationMapper;
+import com.tss.talentsourcingsystem.application.person.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 @Mapper(uses = ContactInformationMapper.class)
 public interface CandidateMapper {
@@ -18,4 +21,6 @@ public interface CandidateMapper {
     @Mapping(source="baseAdditionalFields.createdDate",target="baseAdditionalFieldsCreatedDate")
     @Mapping(source="baseAdditionalFields.updatedDate",target="baseAdditionalFieldsUpdatedDate")
     CandidateDto convertToCandidateDto(Candidate savedCandidate);
+
+    List<CandidateDto> convertToCandidateDtoList(List<Candidate> candidateList);
 }

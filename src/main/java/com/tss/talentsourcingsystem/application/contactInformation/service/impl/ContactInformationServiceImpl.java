@@ -66,14 +66,14 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
     public List<ContactInformationDto> getContactInformationByCandidateId(Long candidateId) {
         List<ContactInformationDto> contactInformationListDto=new ArrayList<>();
 
-        EmailContactInformation emailContactInformationList=emailContactInformationRepository.findByCandidateId(candidateId);
+        EmailContactInformation emailContactInformation=emailContactInformationRepository.findByCandidateId(candidateId);
         PhoneNumberContactInformation phoneNumberContactInformation=phoneNumberContactInformationRepository.findByCandidateId(candidateId);
 
-        if (emailContactInformationList!=null) {
-            contactInformationListDto.add(EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDtoList(emailContactInformationList));
+        if (emailContactInformation!=null) {
+            contactInformationListDto.add(EmailContactInformationMapper.INSTANCE.emailContactInformationToContactInformationDto(emailContactInformation));
         }
         if (phoneNumberContactInformation!=null) {
-            contactInformationListDto.add(PhoneNumberContactInformationMapper.INSTANCE.phoneNumberContactInformationToContactInformationDtoList(phoneNumberContactInformation));
+            contactInformationListDto.add(PhoneNumberContactInformationMapper.INSTANCE.phoneNumberContactInformationToContactInformationDto(phoneNumberContactInformation));
         }
         return contactInformationListDto;
     }

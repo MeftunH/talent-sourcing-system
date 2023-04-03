@@ -6,7 +6,8 @@ import com.tss.talentsourcingsystem.application.candidate.dto.CandidateSaveReque
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.dto.CandidateUpdateStatusRequestDto;
 import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
-import com.tss.talentsourcingsystem.application.candidate.enums.CandidateStatus;
+
+import java.util.List;
 
 public interface CandidateService {
     CandidateDto saveCandidate(CandidateSaveRequestDto candidateSaveRequestDto);
@@ -19,4 +20,6 @@ public interface CandidateService {
     void deleteCandidate(Long candidateId);
 
     CandidateDto updateCandidateStatus(Long candidateId, CandidateUpdateStatusRequestDto candidateStatus);
+
+    List<CandidateDto> getAllCandidates();
 }
