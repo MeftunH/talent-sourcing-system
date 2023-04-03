@@ -8,11 +8,12 @@ import com.tss.talentsourcingsystem.application.contactInformation.mapper.Contac
 import com.tss.talentsourcingsystem.application.person.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(uses = ContactInformationMapper.class)
+@Mapper(uses = ContactInformationMapper.class,unmappedTargetPolicy= ReportingPolicy.IGNORE)
 public interface CandidateMapper {
     CandidateMapper INSTANCE=Mappers.getMapper(CandidateMapper.class);
 
