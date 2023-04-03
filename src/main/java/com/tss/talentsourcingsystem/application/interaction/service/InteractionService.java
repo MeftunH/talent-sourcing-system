@@ -15,4 +15,6 @@ public interface InteractionService {
     List<InteractionDto> getInteractionsByCandidateId(Long id);
 
     InteractionDto updateInteraction(Long id, InteractionUpdateRequestDto interactionUpdateRequestDto);
+
+    void deleteInteraction(Long id);
 }

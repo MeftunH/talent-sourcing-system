@@ -77,4 +77,10 @@ public class InteractionServiceImpl extends BaseService<Interaction> implements 
 
         return InteractionMapper.INSTANCE.interactionToInteractionDto(updatedInteraction);
     }
+
+    @Override
+    public void deleteInteraction(Long id) {
+        Interaction interaction=getInteraction(id);
+        interactionRepository.delete(interaction);
+    }
 }
