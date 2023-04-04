@@ -4,7 +4,6 @@ import com.tss.talentsourcingsystem.application.candidate.entity.Candidate;
 import com.tss.talentsourcingsystem.application.candidate.enums.CandidateStatus;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 import com.tss.talentsourcingsystem.application.person.dto.PersonDto;
-import com.tss.talentsourcingsystem.application.person.enums.PersonType;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

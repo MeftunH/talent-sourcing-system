@@ -51,6 +51,7 @@ public class CandidateController {
         CandidateDto candidateDto=candidateService.updateCandidateStatus(candidateId, candidateUpdateStatusRequestDto);
         return ResponseEntity.ok(RestResponse.of(candidateDto));
     }
+
     @GetMapping
     public ResponseEntity<RestResponse<List<CandidateDto>>> getAllCandidates() {
         return ResponseEntity.ok(RestResponse.of(candidateService.getAllCandidates()));
