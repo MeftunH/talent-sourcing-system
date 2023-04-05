@@ -717,49 +717,73 @@ Show Contact Information Only Phone
 Show Contact Information Both Email and Phone
 ![image](https://user-images.githubusercontent.com/48466124/229848526-bc180014-1aba-4b8b-9cef-c49f038f458a.png)
 
+
 Add Contact Information 
+
 ![image](https://user-images.githubusercontent.com/48466124/229849613-66b5ee3c-c517-4498-b921-948bd9198fa6.png)
 
+
 Types
+
 ![image](https://user-images.githubusercontent.com/48466124/229901537-eb49b509-bbcf-46cd-a8cb-f4a378305789.png)When you select email type
+
 ![image](https://user-images.githubusercontent.com/48466124/229849920-ab0e195d-f740-4a44-b97e-6ab8e6f04139.png)
 
 When you select phone type
+
 ![image](https://user-images.githubusercontent.com/48466124/229850104-51623586-2803-4999-8e69-856aa55ae474.png)
 
 When you select both email and phone type
+
 ![image](https://user-images.githubusercontent.com/48466124/229850224-83aa0747-d2da-49aa-a983-e5cb08c92ecc.png)
 
+
+
 When Contact Information is already added
+
 ![image](https://user-images.githubusercontent.com/48466124/229850335-bcb6a717-537c-47af-ac96-4ec51f301a59.png)
 
 Update Candidate Status
+
 ![image](https://user-images.githubusercontent.com/48466124/229907679-60b196d2-087c-44fa-87f0-30b83b237936.png)
 
 Edit Contact Information
+
 ![image](https://user-images.githubusercontent.com/48466124/229842763-e0ffb2fd-b157-4870-9efc-8b26241c78a2.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229842809-b9c66ca0-4451-4834-b34f-9e630a5efb4c.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229842836-ec4f6863-180a-484b-903f-9cd41bcae1d3.png)
 
 Edit Candidate
+
 ![image](https://user-images.githubusercontent.com/48466124/229908300-1586a026-a38c-4282-8647-831d8a6c24e8.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229908391-639b9d9b-ee9a-470e-8917-1168c725645b.png)
 
 
 Interactions
+
 ![image](https://user-images.githubusercontent.com/48466124/229908476-3cf1d271-78c2-4574-8035-60935fa1ea75.png)
 
 When candidate has no interactions
+
 ![image](https://user-images.githubusercontent.com/48466124/229908576-27c77b5f-2686-443a-b4d9-04e923a55b84.png)
 
 Create Interaction
+
 ![image](https://user-images.githubusercontent.com/48466124/229908727-a0a346f3-56dc-4a9b-9f23-b9d8db104a5d.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229908798-34731547-978f-437f-98bd-6a803f7601e5.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229908826-9f03c635-a06c-4129-b6ce-d9036a5962d8.png)
 
 Update Interaction
+
 ![image](https://user-images.githubusercontent.com/48466124/229908905-1f22bf21-f204-435e-8417-56f6d53790ea.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229908997-d5a13a1b-eaf6-495a-ac1d-74548c5b1992.png)
+
 ![image](https://user-images.githubusercontent.com/48466124/229909107-6782de9c-3b7e-4651-a5b3-31590f5c5953.png)
 
 
