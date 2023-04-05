@@ -1,12 +1,10 @@
-package com.tss.talentsourcingsystem.application.contactInformation.dto;
+package com.tss.talentsourcingsystem.application.contactInformation.emailModule.dto;
 
-import com.tss.talentsourcingsystem.application.contactInformation.entity.EmailContactInformation;
-import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationType;
+import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
+import com.tss.talentsourcingsystem.application.contactInformation.emailModule.entity.EmailContactInformation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Date;
 
 /**
  * A DTO for the {@link EmailContactInformation} entity

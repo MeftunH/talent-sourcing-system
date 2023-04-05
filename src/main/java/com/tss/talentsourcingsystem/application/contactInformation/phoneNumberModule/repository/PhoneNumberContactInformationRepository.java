@@ -1,11 +1,9 @@
-package com.tss.talentsourcingsystem.application.contactInformation.repository;
+package com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.repository;
 /* @author - Maftun Hashimli (maftunhashimli@gmail.com)) */
 
-import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
-import com.tss.talentsourcingsystem.application.contactInformation.entity.PhoneNumberContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.entity.PhoneNumberContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.repository.ContactInformationRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface PhoneNumberContactInformationRepository extends ContactInformationRepository<PhoneNumberContactInformation> {

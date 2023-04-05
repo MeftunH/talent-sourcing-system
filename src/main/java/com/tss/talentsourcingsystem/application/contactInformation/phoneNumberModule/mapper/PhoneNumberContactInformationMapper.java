@@ -1,8 +1,9 @@
-package com.tss.talentsourcingsystem.application.contactInformation.mapper;
+package com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.mapper;
 
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
-import com.tss.talentsourcingsystem.application.contactInformation.entity.PhoneNumberContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.mapper.ContactInformationMapper;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.entity.PhoneNumberContactInformation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

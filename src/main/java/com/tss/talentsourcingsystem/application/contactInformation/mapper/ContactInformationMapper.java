@@ -3,7 +3,9 @@ package com.tss.talentsourcingsystem.application.contactInformation.mapper;
 
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
+import com.tss.talentsourcingsystem.application.contactInformation.emailModule.mapper.EmailContactInformationMapper;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.mapper.PhoneNumberContactInformationMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;

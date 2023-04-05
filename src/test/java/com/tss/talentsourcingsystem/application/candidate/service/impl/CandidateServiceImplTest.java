@@ -8,6 +8,7 @@ import com.tss.talentsourcingsystem.application.candidate.enums.CandidateStatus;
 import com.tss.talentsourcingsystem.application.candidate.mapper.CandidateMapper;
 import com.tss.talentsourcingsystem.application.candidate.repository.CandidateRepository;
 import com.tss.talentsourcingsystem.application.candidate.validation.CandidateValidationService;
+import com.tss.talentsourcingsystem.application.general.exception.IllegalFieldException;
 import com.tss.talentsourcingsystem.application.general.exception.ItemNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,7 @@ class CandidateServiceImplTest {
     }
     @Test
     void shouldThrowExceptionWhenCandidateNotFound() {
-        assertThrows(NullPointerException.class, ()->candidateService.saveCandidate(null));
+        assertThrows(IllegalArgumentException.class, ()->candidateService.saveCandidate(null));
 
     }
 
