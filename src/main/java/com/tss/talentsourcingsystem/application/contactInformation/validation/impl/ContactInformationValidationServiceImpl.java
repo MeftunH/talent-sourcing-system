@@ -6,11 +6,12 @@ import com.tss.talentsourcingsystem.application.candidate.enums.CandidateErrorMe
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationErrorMessage;
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationType;
-import com.tss.talentsourcingsystem.application.contactInformation.repository.EmailContactInformationRepository;
-import com.tss.talentsourcingsystem.application.contactInformation.repository.PhoneNumberContactInformationRepository;
+import com.tss.talentsourcingsystem.application.contactInformation.emailModule.repository.EmailContactInformationRepository;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.repository.PhoneNumberContactInformationRepository;
 import com.tss.talentsourcingsystem.application.contactInformation.validation.ContactInformationValidationService;
 import com.tss.talentsourcingsystem.application.general.exception.GeneralBusinessException;
 import com.tss.talentsourcingsystem.application.general.exception.IllegalFieldException;
+import com.tss.talentsourcingsystem.application.general.exception.InformationMismatchException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -69,7 +70,7 @@ public class ContactInformationValidationServiceImpl implements ContactInformati
     @Override
     public void validatePhoneNumber(String phoneNumber) {
         if (phoneNumber.length()!=10) {
-            throw new IllegalFieldException(ContactInformationErrorMessage.PHONE_NUMBER_IS_NOT_VALID);
+            throw new InformationMismatchException(ContactInformationErrorMessage.PHONE_NUMBER_IS_NOT_VALID);
         }
     }
 
@@ -77,7 +78,7 @@ public class ContactInformationValidationServiceImpl implements ContactInformati
     public void validateIsPhoneNoUnique(String phoneNumber) {
         validateFieldNotNull(phoneNumber);
         if (phoneNumberContactInformationRepository.findByPhoneNumber(phoneNumber)!=null) {
-            throw new IllegalFieldException(ContactInformationErrorMessage.PHONE_NUMBER_IS_NOT_UNIQUE);
+            throw new InformationMismatchException(ContactInformationErrorMessage.PHONE_NUMBER_IS_NOT_UNIQUE);
         }
     }
 

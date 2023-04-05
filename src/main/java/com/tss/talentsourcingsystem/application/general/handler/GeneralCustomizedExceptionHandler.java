@@ -4,6 +4,7 @@ package com.tss.talentsourcingsystem.application.general.handler;
 import com.tss.talentsourcingsystem.application.general.errorMessage.BaseErrorMessage;
 import com.tss.talentsourcingsystem.application.general.exception.GeneralBusinessException;
 import com.tss.talentsourcingsystem.application.general.exception.IllegalFieldException;
+import com.tss.talentsourcingsystem.application.general.exception.InformationMismatchException;
 import com.tss.talentsourcingsystem.application.general.exception.ItemNotFoundException;
 import com.tss.talentsourcingsystem.application.generic.dto.RestResponse;
 import org.springframework.http.HttpHeaders;
@@ -77,6 +78,22 @@ public class GeneralCustomizedExceptionHandler extends ResponseEntityExceptionHa
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleAllInformationMismatch(InformationMismatchException ex, WebRequest webRequest){
+
+        Date errorDate = new Date();
+        String message = ex.getBaseErrorMessage().getMessage();
+        String description = ex.getBaseErrorMessage().getDetailMessage();
+
+        GeneralExceptionResponse genExceptionResponse = new GeneralExceptionResponse(errorDate, message, description);
+
+        RestResponse<GeneralExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
+        restResponse.setMessage(message);
+
+        return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
+    }
+
 
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
