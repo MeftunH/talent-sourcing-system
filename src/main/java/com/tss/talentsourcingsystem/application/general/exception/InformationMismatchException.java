@@ -5,7 +5,7 @@ import com.tss.talentsourcingsystem.application.general.errorMessage.BaseErrorMe
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(HttpStatus.CONFLICT)
 public class InformationMismatchException extends GeneralBusinessException {
     public InformationMismatchException(BaseErrorMessage message) {
         super(message);

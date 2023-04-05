@@ -44,17 +44,7 @@ public class CandidateValidationServiceImpl implements CandidateValidationServic
     public void validateCandidate(Candidate candidate) {
         validateAreFieldsNonNull(candidate);
         validateIsPersonTypeCandidate(candidate);
-
     }
-
-    @Override
-    public void validateCandidateStatusIsExists(CandidateStatus candidateStatus) {
-       if(!EnumSet.allOf(CandidateStatus.class).contains(candidateStatus))
-       {
-              throw new IllegalFieldException(CandidateErrorMessage.CANDIDATE_STATUS_NOT_FOUND);
-       }
-    }
-
     private void validateAreFieldsNonNull(Candidate candidate) {
         if (Objects.isNull(candidate.getName())||Objects.isNull(candidate.getSurname())||Objects.isNull(candidate.getCandidateStatus())||Objects.isNull(candidate.getPersonType())) {
             throw new IllegalFieldException(PersonErrorMessage.FIELD_CANNOT_BE_NULL);
@@ -66,4 +56,13 @@ public class CandidateValidationServiceImpl implements CandidateValidationServic
             throw new IllegalFieldException(CandidateErrorMessage.PERSON_TYPE_MUST_BE_CANDIDATE);
         }
     }
+    @Override
+    public void validateCandidateStatusIsExists(CandidateStatus candidateStatus) {
+       if(!EnumSet.allOf(CandidateStatus.class).contains(candidateStatus))
+       {
+              throw new IllegalFieldException(CandidateErrorMessage.CANDIDATE_STATUS_NOT_FOUND);
+       }
+    }
+
+
 }

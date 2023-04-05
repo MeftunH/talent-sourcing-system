@@ -7,14 +7,14 @@ import com.tss.talentsourcingsystem.application.candidate.validation.CandidateVa
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationDto;
 import com.tss.talentsourcingsystem.application.contactInformation.dto.ContactInformationSaveRequestDto;
 import com.tss.talentsourcingsystem.application.contactInformation.entity.ContactInformation;
-import com.tss.talentsourcingsystem.application.contactInformation.entity.EmailContactInformation;
-import com.tss.talentsourcingsystem.application.contactInformation.entity.PhoneNumberContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.emailModule.entity.EmailContactInformation;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.entity.PhoneNumberContactInformation;
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationErrorMessage;
 import com.tss.talentsourcingsystem.application.contactInformation.enums.ContactInformationType;
-import com.tss.talentsourcingsystem.application.contactInformation.mapper.EmailContactInformationMapper;
-import com.tss.talentsourcingsystem.application.contactInformation.mapper.PhoneNumberContactInformationMapper;
-import com.tss.talentsourcingsystem.application.contactInformation.repository.EmailContactInformationRepository;
-import com.tss.talentsourcingsystem.application.contactInformation.repository.PhoneNumberContactInformationRepository;
+import com.tss.talentsourcingsystem.application.contactInformation.emailModule.mapper.EmailContactInformationMapper;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.mapper.PhoneNumberContactInformationMapper;
+import com.tss.talentsourcingsystem.application.contactInformation.emailModule.repository.EmailContactInformationRepository;
+import com.tss.talentsourcingsystem.application.contactInformation.phoneNumberModule.repository.PhoneNumberContactInformationRepository;
 import com.tss.talentsourcingsystem.application.contactInformation.service.ContactInformationService;
 import com.tss.talentsourcingsystem.application.contactInformation.validation.ContactInformationValidationService;
 import com.tss.talentsourcingsystem.application.general.errorMessage.GeneralErrorMessage;
@@ -48,9 +48,7 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
     @Override
     public ContactInformationDto saveContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
         Candidate candidate=candidateService.getCandidateById(contactInformationSaveRequestDto.candidateId());
-        candidateValidationService.checkCandidateExists(candidate);
-        contactInformationValidationService.checkIfIsValidContactInformationType(contactInformationSaveRequestDto);
-        contactInformationValidationService.checkIfIsInformationMatchToInformationType(contactInformationSaveRequestDto);
+        validateContactInformation(contactInformationSaveRequestDto, candidate);
 
         if (contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.BOTH)) {
             return saveBothContactInformationTypes(contactInformationSaveRequestDto, candidate);
@@ -60,6 +58,21 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
             return PhoneNumberContactInformationMapper.INSTANCE.contactInformationToContactInformationDto(savePhoneNumberContactInformation(contactInformationSaveRequestDto, candidate));
         }
         throw new GeneralBusinessException(GeneralErrorMessage.INTERNAL_SERVER_ERROR);
+    }
+
+    private void validateContactInformation(ContactInformationSaveRequestDto contactInformationSaveRequestDto, Candidate candidate) {
+        candidateValidationService.checkCandidateExists(candidate);
+        contactInformationValidationService.checkIfIsValidContactInformationType(contactInformationSaveRequestDto);
+        contactInformationValidationService.checkIfIsInformationMatchToInformationType(contactInformationSaveRequestDto);
+        if (contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.BOTH)||contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.EMAIL)) {
+            contactInformationValidationService.validateEmail(contactInformationSaveRequestDto.emailAddress());
+            contactInformationValidationService.validateIsEmailUnique(contactInformationSaveRequestDto.emailAddress());
+        }
+        if (contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.BOTH)||contactInformationSaveRequestDto.contactInformationType().equals(ContactInformationType.PHONE_NUMBER)) {
+            contactInformationValidationService.validatePhoneNumber(contactInformationSaveRequestDto.phoneNumber());
+            contactInformationValidationService.validateIsPhoneNoUnique(contactInformationSaveRequestDto.phoneNumber());
+        }
+
     }
 
     @Override
@@ -82,8 +95,7 @@ public class ContactInformationServiceImpl extends BaseService<ContactInformatio
     @Transactional
     public ContactInformationDto updateContactInformation(Long candidateId, ContactInformationSaveRequestDto contactInformationSaveRequestDto) {
 
-        contactInformationValidationService.checkIfIsValidContactInformationType(contactInformationSaveRequestDto);
-        contactInformationValidationService.checkIfIsInformationMatchToInformationType(contactInformationSaveRequestDto);
+        validateContactInformation(contactInformationSaveRequestDto, candidateService.getCandidateById(candidateId));
 
         ContactInformationType newType=contactInformationSaveRequestDto.contactInformationType();
         ContactInformationType oldType=getCurrentContactInformationType(candidateId);
